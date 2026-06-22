@@ -1,0 +1,14 @@
+.track {
+    border-radius: 7px;
+    background-color: green;
+    color: black;
+    max-width: 200px;
+    margin: 10px;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;             /* track cards stack on narrow screens */
+    justify-content: center;
+}

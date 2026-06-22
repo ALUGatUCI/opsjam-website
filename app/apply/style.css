@@ -1,0 +1,93 @@
+.signupForm {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px 16px;          /* row gap, column gap */
+    width: 100%;             /* fill the available width... */
+    max-width: 520px;        /* ...but never grow past this */
+    box-sizing: border-box;  /* padding counts inside the width */
+    margin-inline: auto;
+    padding: 5px;
+    text-align: left;
+}
+
+.signupForm > label {
+    justify-self: end;       /* push field labels toward the inputs */
+}
+
+.signupForm input:not([type="checkbox"]):not([type="file"]),
+.signupForm select {
+    width: 100%;             /* every field is the same width */
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 2px solid green;
+    box-shadow: none;
+    appearance: none;
+    background-color: black;
+    color: green;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.checkboxGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;           /* row gap, column gap */
+}
+
+.checkboxGroup label {
+    display: flex;
+    align-items: center;
+    gap: 6px;                /* space between box and its text */
+}
+
+.checkboxGroup input[type="checkbox"],
+.signupForm > input[type="checkbox"] {
+    width: auto;             /* don't stretch like the text fields */
+    accent-color: green;
+}
+
+/* A standalone checkbox sits in the grid's input column — keep it left-aligned
+   and its natural size instead of being stretched by the grid. */
+.signupForm > input[type="checkbox"] {
+    justify-self: start;
+}
+
+/* On phones, stack each label above its input instead of two columns. */
+@media (max-width: 480px) {
+    .signupForm {
+        grid-template-columns: 1fr;
+    }
+
+    .signupForm > label {
+        justify-self: start;     /* left-align labels when stacked */
+    }
+}
+
+.statusBox {
+    max-width: 520px;
+    margin: 16px auto 0;
+    padding: 12px 16px;
+    border-radius: 7px;
+    border: 2px solid;
+    color: white;
+}
+
+.statusSuccess {
+    background-color: darkgreen;
+    border-color: green;
+}
+
+.statusError {
+    background-color: darkred;
+    border-color: red;
+}
+
+.submitButton {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border: none;
+    appearance: none;
+    border-radius: 7px;
+    font-size: 15px;
+}

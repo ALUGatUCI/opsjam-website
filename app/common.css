@@ -1,0 +1,24 @@
+.navBar {
+    display: flex;
+    flex-wrap: wrap;          /* buttons drop to a new line instead of overflowing */
+    justify-content: center;
+    gap: 4px;
+}
+
+.navButton,
+.currentNavButton {
+    background-color: black;
+    color: green;
+    /* Scale with the viewport: small on phones, capped on desktop. */
+    padding: clamp(6px, 2vw, 12px) clamp(10px, 4vw, 20px);
+    border: none;
+    appearance: none;
+    border-radius: 7px;
+    font-size: clamp(14px, 4vw, 22px);
+    cursor: pointer;
+}
+
+.currentNavButton {
+    background-color: green;
+    color: black;
+}
