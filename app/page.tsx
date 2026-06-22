@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { NavBar } from './common'
+import { MailingList } from './MailingList'
 
 function ApplyButton() {
   return (
@@ -49,7 +50,14 @@ export default function Home() {
         <TracksButton />
       </div>
 
-      <h1>Thanks to our Sponsors</h1>
+      <h1>Be The First To Know!</h1>
+      <p>
+        Join our mailing list for updates and to be informed when
+        applications open!
+      </p>
+      <MailingList />
+
+      <h1>Thanks To Our Sponsors</h1>
       {/* This is for when we have actual sponsors to showcase */}
       <div className='horizontal sponsors'>
       </div>
