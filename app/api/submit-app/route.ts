@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {
     return Response.json(
-      { ok: false, error: 'Missing required fields' },
+      { ok: false, error: 'Applications are not being accepted at this time' },
       { status: 400 },
     )
   }
