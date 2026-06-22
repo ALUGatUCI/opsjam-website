@@ -199,18 +199,31 @@ function PersonalInformation() {
 }
 
 export default function Apply() {
-  return (
-    <>
-      <NavBar></NavBar>
-      <h1>Application</h1>
+  if (process.env.NEXT_PUBLIC_ACCEPTING_APPS == '0') {
+    return (
+      <>
+        <NavBar></NavBar>
+        <h1>Application</h1>
 
-      <p>
-        We are excited that you're interested in applying for InfraJam! With that said,
-        please fill out the form below and we will review it and get back to you as soon
-        as possible.
-      </p>
+        <p>
+          Applications are not open at this time. Please check again soon!
+        </p>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <NavBar></NavBar>
+        <h1>Application</h1>
 
-      <PersonalInformation></PersonalInformation>
-    </>
-  )
+        <p>
+          We are excited that you're interested in applying for InfraJam! With that said,
+          please fill out the form below and we will review it and get back to you as soon
+          as possible.
+        </p>
+
+        <PersonalInformation></PersonalInformation>
+      </>
+    )
+  }
 }

@@ -1,9 +1,14 @@
 .track {
-    border-radius: 7px;
-    background-color: green;
-    color: black;
-    max-width: 200px;
+    border-radius: 8px;
+    background-color: #25254a;
+    color: white;
+    max-width: 240px;
+    padding: 4px 22px 22px;
     margin: 10px;
+}
+
+.track h2 {
+    color: #a5a6f6;          /* indigo accent for the track title */
 }
 
 .horizontal {

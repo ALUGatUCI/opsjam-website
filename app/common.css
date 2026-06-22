@@ -2,23 +2,29 @@
     display: flex;
     flex-wrap: wrap;          /* buttons drop to a new line instead of overflowing */
     justify-content: center;
-    gap: 4px;
+    gap: 8px;
 }
 
 .navButton,
 .currentNavButton {
-    background-color: black;
-    color: green;
+    background-color: transparent;
+    color: white;
     /* Scale with the viewport: small on phones, capped on desktop. */
-    padding: clamp(6px, 2vw, 12px) clamp(10px, 4vw, 20px);
+    padding: clamp(6px, 2vw, 10px) clamp(12px, 4vw, 18px);
     border: none;
     appearance: none;
-    border-radius: 7px;
-    font-size: clamp(14px, 4vw, 22px);
+    border-radius: 6px;
+    font-size: clamp(14px, 4vw, 18px);
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.navButton:hover {
+    background-color: #2a2a4a;
 }
 
 .currentNavButton {
-    background-color: green;
-    color: black;
+    background-color: #6366f1;
+    color: white;
 }

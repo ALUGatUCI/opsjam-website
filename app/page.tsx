@@ -19,7 +19,7 @@ function TracksButton() {
   return (
     <>
       <Link href="/tracks">
-        <button className='applyButton'>
+        <button className='applyButton secondaryButton'>
           View Tracks
         </button>
       </Link>
@@ -44,7 +44,8 @@ export default function Home() {
       </p>
 
       <div className='horizontal'>
-        <ApplyButton />
+        {/* Comment out the apply button until apps open */}
+        {/*<ApplyButton />*/}
         <TracksButton />
       </div>
 

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
+const redHatDisplay = Red_Hat_Display({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-red-hat',
   display: 'swap',
 })
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={jetbrainsMono.className}
+      className={redHatDisplay.variable}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
