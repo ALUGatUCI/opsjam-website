@@ -20,27 +20,26 @@
     position: relative;      /* anchor the underline pseudo-element */
 }
 
-/* Animated underline that sits under the text and grows on hover.
-   Excluded on the current page's button (which already has its own underline). */
-.navButton:not(.currentNavButton)::after {
+/* Underline bar under the text — same position for every button.
+   Hidden by default, grows on hover, and stays shown for the current page. */
+.navButton::after {
     content: '';
     position: absolute;
     left: clamp(12px, 4vw, 18px);    /* match the horizontal padding */
     right: clamp(12px, 4vw, 18px);
     bottom: 4px;
     height: 2px;
-    background-color: white;
+    background-color: currentColor;  /* matches each button's text color */
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.2s ease;
 }
 
-.navButton:not(.currentNavButton):hover::after {
+.navButton:hover::after,
+.currentNavButton::after {
     transform: scaleX(1);
 }
 
 .currentNavButton {
     color: gray;
-    text-decoration: underline;
-    text-underline-offset: 6px;
 }
