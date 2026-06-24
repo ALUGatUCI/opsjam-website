@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -8,16 +9,31 @@ import './common.css'
 type NavButtonProps = {
   text: string
   link: string
+  imageSrc?: string // when set, render this image instead of the text
 }
 
 export function NavButton(props: NavButtonProps) {
   const pathname = usePathname()
   const isCurrent = pathname === props.link
 
+  const classes = ['navButton']
+  if (isCurrent) classes.push('currentNavButton')
+  if (props.imageSrc) classes.push('logoButton')
+
   return (
     <Link href={props.link}>
-      <button className={isCurrent ? 'currentNavButton navButton' : 'navButton'}>
-        {props.text}
+      <button className={classes.join(' ')}>
+        {props.imageSrc ? (
+          <Image
+            src={props.imageSrc}
+            alt={props.text}
+            width={72}
+            height={72}
+            className="navLogo"
+          />
+        ) : (
+          props.text
+        )}
       </button>
     </Link>
   )
@@ -26,9 +42,8 @@ export function NavButton(props: NavButtonProps) {
 export function NavBar() {
   return (
     <>
-      <br/>
       <div className='navBar'>
-        <NavButton text='Home' link='/'></NavButton>
+        <NavButton text='Home' link='/' imageSrc='/infrajam-logo.svg'></NavButton>
         <NavButton text='Apply' link='/apply'></NavButton>
         <NavButton text='Tracks' link='/tracks'></NavButton>
       </div>

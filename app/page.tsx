@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { NavBar } from './common'
-import { MailingList } from './MailingList'
+import { NavBar,  } from './components/common'
+import { MailingList } from './components/MailingList'
 
 function ApplyButton() {
   return (
@@ -28,11 +28,23 @@ function TracksButton() {
   )
 }
 
+function SponsorButton() {
+  return (
+    <>
+      <Link href="mailto:contact@alugatuci.org">
+        <button className='applyButton secondaryButton'>
+          Interested in Sponsoring?
+        </button>
+      </Link>
+    </>
+  )
+}
+
 export default function Home() {
   return (
     <>
       <NavBar></NavBar>
-      <h1>Welcome to InfraJam!</h1>
+      <Image width="400" height="250" alt="InfraJam Horizontal Logo" src="/infrajam-logo-horizontal.svg"></Image>
       <p>
         An in-development <em style={{ color: '#6366f1' }}>infrastructure-focused hackathon</em> that
         is planned to be hosted at UC Irvine.
@@ -61,10 +73,9 @@ export default function Home() {
 
       <h2>Thanks To Our Sponsors</h2>
       {/* This is for when we have actual sponsors to showcase */}
-      <div className='horizontal sponsors'>
-      </div>
+      <SponsorButton></SponsorButton>
 
-      <h2>Brought to you by</h2>
+      <h2>Brought To You By</h2>
       <div className="horizontal">
         <a href="https://alugatuci.org" target="_blank"><Image alt="ALUG@UCI" width="300" height="175" src="/alug-logo.png" /></a>
       </div>

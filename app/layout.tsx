@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
-import { NetworkBackground } from "./NetworkBackground";
+import { NetworkBackground } from "./components/NetworkBackground";
 import "./globals.css";
 
 const redHatDisplay = Red_Hat_Display({
@@ -10,8 +10,8 @@ const redHatDisplay = Red_Hat_Display({
 })
 
 export const metadata: Metadata = {
-  title: "InfraJam at UCI",
-  description: "Concept app for an ALUG@UCI-hosted hackathon",
+  title: "OpsJam @ UCI",
+  description: "UCI Irvine's infrastructure-focused hackathon",
 };
 
 export default function RootLayout({

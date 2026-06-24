@@ -1,4 +1,4 @@
-import { NavBar } from '../common'
+import { NavBar } from '../components/common'
 import './style.css'
 
 export default function Tracks() {
@@ -23,18 +23,18 @@ export default function Tracks() {
         </div>
 
         <div className='track'>
-          <h2>Sysadmin</h2>
+          <h2>Orchestration</h2>
           <p>
-            Administrating systems can sometimes be a little... tedious, no? Maybe you can
-            do something that brings it closer to seamless?
+            The beauty of systems is that they can do tasks for us, and that's what orchestration's
+            about. So how can this beauty be furthered?
           </p>
         </div>
 
         <div className='track'>
-          <h2>Networking</h2>
+          <h2>Monitoring</h2>
           <p>
-            Networking is fascinating, but also can be a little intricate. So what's something that
-            can make networking easier?
+            It's always important to be in the know for how well systems are doing. Is there a gap? Could
+            information be more concise? What's a way to make monitoring better?
           </p>
         </div>
       </div>
