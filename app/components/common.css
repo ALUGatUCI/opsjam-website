@@ -1,8 +1,37 @@
 .navBar {
     display: flex;
     flex-wrap: wrap;          /* buttons drop to a new line instead of overflowing */
-    justify-content: center;
+    justify-content: left;
+    align-items: center;
     gap: 8px;
+    width: 100%;              /* span the page so the logo can sit at the left */
+    position: sticky;
+    top: 0;
+    background-color: #312e81;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Extend the navbar background upward so over-scrolling past the top of the
+   page never reveals a gap of page background above the bar. */
+.navBar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 100vh;
+    background-color: #312e81;
+}
+
+.navLogo {
+    display: block;           /* removes the inline-image baseline gap */
+}
+
+/* The logo button: pinned to the left, no underline. */
+.logoButton {
+    margin-right: auto;       /* push the remaining buttons to the right */
+    padding-left: 0;
 }
 
 .navButton,
@@ -21,8 +50,9 @@
 }
 
 /* Underline bar under the text — same position for every button.
-   Hidden by default, grows on hover, and stays shown for the current page. */
-.navButton::after {
+   Hidden by default, grows on hover, and stays shown for the current page.
+   Excluded on the logo button. */
+.navButton:not(.logoButton)::after {
     content: '';
     position: absolute;
     left: clamp(12px, 4vw, 18px);    /* match the horizontal padding */
@@ -35,8 +65,8 @@
     transition: transform 0.2s ease;
 }
 
-.navButton:hover::after,
-.currentNavButton::after {
+.navButton:not(.logoButton):hover::after,
+.currentNavButton:not(.logoButton)::after {
     transform: scaleX(1);
 }
 

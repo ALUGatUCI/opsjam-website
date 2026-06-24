@@ -3,7 +3,8 @@
 import './style.css'
 import { useEffect, useRef, useState } from 'react'
 import { COUNTRIES } from './countries'
-import { NavBar } from '../common'
+import { NavBar } from '../components/common'
+import { MailingList } from '../components/MailingList'
 
 const STORAGE_KEY = 'infrajam-application'
 
@@ -206,8 +207,11 @@ export default function Apply() {
         <h1>Application</h1>
 
         <p>
-          Applications are not open at this time. Please check again soon!
+          Applications are not open at this time. Be the first to know when applications
+          open by joining our mailing list!
         </p>
+
+        <MailingList></MailingList>
       </>
     )
   } else {
