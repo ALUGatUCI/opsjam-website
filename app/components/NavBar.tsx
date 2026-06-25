@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import './common.css'
+import './navbar.css'
 
 type NavButtonProps = {
   text: string

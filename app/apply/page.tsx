@@ -3,7 +3,7 @@
 import './style.css'
 import { useEffect, useRef, useState } from 'react'
 import { COUNTRIES } from './countries'
-import { NavBar } from '../components/common'
+import { NavBar } from '../components/NavBar'
 import { MailingList } from '../components/MailingList'
 
 const STORAGE_KEY = 'infrajam-application'

@@ -1,44 +1,8 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
-import { NavBar,  } from './components/common'
+import { NavBar } from './components/NavBar'
 import { MailingList } from './components/MailingList'
-
-function ApplyButton() {
-  return (
-    <>
-      <Link href="/apply">
-        <button className='applyButton'>
-          Apply Today!
-        </button>
-      </Link>
-    </>
-  )
-}
-
-function TracksButton() {
-  return (
-    <>
-      <Link href="/tracks">
-        <button className='applyButton secondaryButton'>
-          View Tracks
-        </button>
-      </Link>
-    </>
-  )
-}
-
-function SponsorButton() {
-  return (
-    <>
-      <Link href="mailto:contact@alugatuci.org">
-        <button className='applyButton secondaryButton'>
-          Interested in Sponsoring?
-        </button>
-      </Link>
-    </>
-  )
-}
+import { SiteButton } from './components/SiteButton'
 
 export default function Home() {
   return (
@@ -60,8 +24,7 @@ export default function Home() {
 
       <div className='horizontal'>
         {/* Comment out the apply button until apps open */}
-        {/*<ApplyButton />*/}
-        <TracksButton />
+        {/*<SiteButton text='Apply Today!å' link='/apply'></SiteButton>*/}
       </div>
 
       <h2>Be The First To Know!</h2>
@@ -73,7 +36,10 @@ export default function Home() {
 
       <h2>Thanks To Our Sponsors</h2>
       {/* This is for when we have actual sponsors to showcase */}
-      <SponsorButton></SponsorButton>
+      <div className='horizontal sponsors'>
+
+      </div>
+      <SiteButton text='Interested in Sponsoring?' link='mailto:contact@alugatuci.org'></SiteButton>
 
       <h2>Brought To You By</h2>
       <div className="horizontal">
