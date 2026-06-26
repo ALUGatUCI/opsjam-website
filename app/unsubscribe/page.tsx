@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-import { NavBar } from '../../components/NavBarBar'
+import { NavBar } from '../../components/NavBar'
 
 import '../globals.css'
 

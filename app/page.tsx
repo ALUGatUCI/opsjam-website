@@ -1,8 +1,8 @@
 import Image from 'next/image'
 
-import { NavBar } from '../components/NavBarr'
-import { MailingList } from '../components/MailingListt'
-import { SiteButton } from '../components/SiteButtonn'
+import { NavBar } from '../components/NavBar'
+import { MailingList } from '../components/MailingList'
+import { SiteButton } from '../components/SiteButton'
 
 export default function Home() {
   return (
@@ -37,8 +37,7 @@ export default function Home() {
       <h2>Thanks To Our Sponsors</h2>
       {/* This is for when we have actual sponsors to showcase */}
       <div className='horizontal sponsors'>
-
-      </div>
+        
       <SiteButton text='Interested in Sponsoring?' link='mailto:contact@alugatuci.org'></SiteButton>
 
       <h2>Brought To You By</h2>

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
-import supabase from '../../../services/supabasease'
-import { generateRandomCode } from '../../../services/securityity'
+import supabase from '../../../services/supabase'
+import { generateRandomCode } from '../../../services/security'
 
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {

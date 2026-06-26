@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
-import { NetworkBackground } from "../components/NetworkBackgroundd";
+import { NetworkBackground } from "../components/NetworkBackground";
 import "./globals.css";
 
 const redHatDisplay = Red_Hat_Display({
