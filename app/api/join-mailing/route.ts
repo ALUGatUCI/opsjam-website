@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { nanoid } from 'nanoid'
+import supabase from '../../../services/supabasease'
+import { generateRandomCode } from '../../../services/securityity'
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,11 +13,6 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedEmail = String(email).trim()
-
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    )
 
     // Check if email is already in the database
     const { data: dupData, error: dupError } = await supabase
@@ -42,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     const { error: addError } = await supabase
       .from('mailing')
-      .insert({ email: trimmedEmail, unsubscribe_key: nanoid() })
+      .insert({ email: trimmedEmail, unsubscribe_key: generateRandomCode() })
 
     if (addError) {
       return Response.json(

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import supabase from '../../../services/supabasease'
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -14,11 +14,6 @@ export async function DELETE(request: NextRequest) {
 
     const trimmedEmail = String(email).trim()
     const trimmedUnsubscribeKey = String(unsubscribeKey).trim()
-
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    )
 
     // Check if email is already in the database
     const { data, error } = await supabase

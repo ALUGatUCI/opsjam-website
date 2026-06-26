@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import supabase from '../../../services/supabasease'
+import { generateRandomCode } from '../../../services/securityity'
 
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {
@@ -45,14 +46,6 @@ export async function PUT(request: NextRequest) {
     )
   }
 
-  // Require a .edu email (case-insensitive, must have a domain before .edu).
-  if (!/@[\w.-]+\.edu$/i.test(String(email))) {
-    return Response.json(
-      { ok: false, error: 'Please use a valid .edu email address' },
-      { status: 400 },
-    )
-  }
-
   // Check the date of birth is 18 or over
   if (!dateOfBirth) {
     return Response.json(
@@ -60,13 +53,6 @@ export async function PUT(request: NextRequest) {
       { status: 400 },
     )
   }
-
-  // Server-only client. The service-role key bypasses RLS and must never
-  // reach the browser, so it lives in a non-public env var.
-  const supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  )
 
   // Check that this email hasn't already applied.
   const { data: existing, error: lookupError } = await supabase
@@ -121,6 +107,7 @@ export async function PUT(request: NextRequest) {
     shirt_size: shirtSize ? String(shirtSize) : null,
     dietary_restrictions: dietaryRestrictions,
     resume_path: resumePath,
+    confirmation_code: generateRandomCode()
   })
 
   if (insertError) {

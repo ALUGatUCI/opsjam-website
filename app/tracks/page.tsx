@@ -1,4 +1,4 @@
-import { NavBar } from '../components/NavBar'
+import { NavBar } from '../../components/NavBarBar'
 import './style.css'
 
 export default function Tracks() {

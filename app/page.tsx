@@ -1,8 +1,8 @@
 import Image from 'next/image'
 
-import { NavBar } from './components/NavBar'
-import { MailingList } from './components/MailingList'
-import { SiteButton } from './components/SiteButton'
+import { NavBar } from '../components/NavBarr'
+import { MailingList } from '../components/MailingListt'
+import { SiteButton } from '../components/SiteButtonn'
 
 export default function Home() {
   return (
