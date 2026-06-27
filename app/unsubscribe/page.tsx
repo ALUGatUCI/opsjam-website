@@ -41,8 +41,6 @@ export default function Unsubscribe() {
 
   return (
     <>
-      <NavBar></NavBar>
-
       <h1>Unsubscribe</h1>
 
       {status === null && <p>Unsubscribing…</p>}

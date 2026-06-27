@@ -4,7 +4,6 @@ import './style.css'
 export default function Tracks() {
   return (
     <>
-      <NavBar></NavBar>
       <h1>NOTICE: Tracks have not been finalized and are subject to change</h1>
       <h1>Tracks</h1>
 

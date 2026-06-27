@@ -203,7 +203,6 @@ export default function Apply() {
   if (process.env.NEXT_PUBLIC_ACCEPTING_APPS == '0') {
     return (
       <>
-        <NavBar></NavBar>
         <h1>Application</h1>
 
         <p>

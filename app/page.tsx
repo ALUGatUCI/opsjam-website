@@ -7,7 +7,6 @@ import { SiteButton } from '../components/SiteButton'
 export default function Home() {
   return (
     <>
-      <NavBar></NavBar>
       <Image width="400" height="250" alt="InfraJam Horizontal Logo" src="/infrajam-logo-horizontal.svg"></Image>
       <p>
         An in-development <em style={{ color: '#6366f1' }}>infrastructure-focused hackathon</em> that
