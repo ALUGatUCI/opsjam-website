@@ -3,7 +3,6 @@
 import './style.css'
 import { useEffect, useRef, useState } from 'react'
 import { COUNTRIES } from './countries'
-import { NavBar } from '../../components/NavBar'
 import { MailingList } from '../../components/MailingList'
 
 const STORAGE_KEY = 'infrajam-application'
@@ -186,8 +185,7 @@ function PersonalInformation() {
 
       {status === 'success' && (
         <p className="statusBox statusSuccess">
-          Thank you for applying to OpsJam! We&apos;ve received your application and
-          will get back to you soon.
+          Thank you for applying to OpsJam! Check your email to confirm your application.
         </p>
       )}
       {status === 'error' && (
