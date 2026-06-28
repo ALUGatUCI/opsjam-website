@@ -216,7 +216,6 @@ export default function Apply() {
   } else {
     return (
       <>
-        <NavBar></NavBar>
         <h1>Application</h1>
 
         <p>
