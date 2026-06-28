@@ -40,4 +40,6 @@ class DatabaseService {
   }
 }
 
-export default DatabaseService
+const database = new DatabaseService()
+
+export default database
