@@ -18,11 +18,13 @@ export async function POST(request: NextRequest) {
     await databaseService.joinMailingList(trimmedEmail)
   } catch (error) {
     return Response.json(
-      { ok: false, message: String(error) }
+      { ok: false, message: String(error) },
+      { status: 500 }
     )
   }
 
   return Response.json(
-    { ok: true, message: "The email has been subscribed to the mailing list" }
+    { ok: true, message: "The email has been subscribed to the mailing list" },
+    { status: 201 }
   )
 }

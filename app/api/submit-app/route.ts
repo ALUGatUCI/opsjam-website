@@ -71,10 +71,12 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     return Response.json(
       { ok: false, error: String(error) },
+      { status: 500 }
     )
   }
 
   return Response.json(
     { ok: true, message: 'Application submitted' },
+    { status: 201 }
   )
 }

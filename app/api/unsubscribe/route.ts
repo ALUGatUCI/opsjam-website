@@ -24,10 +24,12 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     return Response.json(
       { ok: false, error: String(error) },
+      { status: 500 }
     )
   }
 
   return Response.json(
     { ok: true, message: "Successfully unsubscribed" },
+    { status: 201 }
   )
 }
