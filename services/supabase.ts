@@ -77,6 +77,31 @@ class DatabaseService {
     }
   }
 
+  public async unsubscribeFromMailingList(email: string, unsubscribeKey: string): Promise<void> {
+    const { data, error } = await this.supabase
+      .from('mailing')
+      .select('email, unsubscribe_key')
+      .eq('email', email)
+      .maybeSingle()
+
+    if (error) {
+      throw new Error("The email was not found")
+    }
+
+    if (data?.unsubscribe_key === unsubscribeKey) {
+      const { error: deleteError } = await this.supabase
+        .from('mailing')
+        .delete()
+        .eq('email', email)
+
+      if (deleteError) {
+        throw new Error("Something went wrong unsubscribing you")
+      }
+    } else {
+      throw new Error("The unsubscribe token does not match")
+    }
+  }
+
   public async submitApplication(application: ApplicationSubmission): Promise<void> {
     // Reject a second application from the same email.
     const { data: existing, error: lookupError } = await this.supabase
