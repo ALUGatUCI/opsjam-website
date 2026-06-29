@@ -1,4 +1,8 @@
 .track {
+    position: relative;          /* anchor for the hover-reveal overlay */
+    overflow: hidden;            /* clip the overlay to the rounded card */
+    display: flex;
+    flex-direction: column;
     border-radius: 8px;
     background-color: #25254a;
     color: white;
@@ -11,9 +15,76 @@
     color: #a5a6f6;          /* indigo accent for the track title */
 }
 
+/* Default (touch / no-hover devices): the prize just shows inline beneath the
+   description, and the hover cue is hidden since there's nothing to hover. */
+.prizeHint {
+    display: none;
+}
+
+.prizeReveal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #3a3a5c;
+}
+
+.prizeImage {
+    width: 100%;             /* scale to the card, keep each image's ratio */
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Hover-capable devices: hide the prize and reveal it as an overlay on hover,
+   so the card never changes height (no reflow / stretched-sibling void). */
+@media (hover: hover) and (pointer: fine) {
+    .prizeHint {
+        display: block;
+        margin-top: auto;        /* sit at the bottom of the card */
+        margin-bottom: 0;
+        padding-top: 12px;
+        border-top: 1px solid #3a3a5c;
+        color: #a5a6f6;
+        font-weight: 600;
+    }
+
+    .prizeReveal {
+        position: absolute;
+        inset: 0;
+        justify-content: center;
+        margin-top: 0;
+        padding: 16px;
+        border-top: none;
+        background-color: #25254a;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+    }
+
+    .track:hover .prizeReveal,
+    .track:focus-within .prizeReveal {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .prizeImage {
+        max-height: 70%;
+        object-fit: contain;
+    }
+}
+
+.prizeCaption {
+    margin: 0;
+    font-weight: 600;
+}
+
 .horizontal {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;             /* track cards stack on narrow screens */
     justify-content: center;
+    align-items: stretch;        /* every card matches the tallest in its row */
+    gap: 8px;
 }

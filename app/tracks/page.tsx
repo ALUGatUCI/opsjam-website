@@ -1,4 +1,4 @@
-import { NavBar } from '../../components/NavBar'
+import Image from 'next/image'
 import './style.css'
 
 export default function Tracks() {
@@ -19,6 +19,12 @@ export default function Tracks() {
             Everyday, developers feel like there is at least one thing that could be improved about
             their process. So why not build something fixes an issue you face as a developer?
           </p>
+
+          <p className='prizeHint'>Hover to reveal prize</p>
+          <div className='prizeReveal'>
+            <Image className='prizeImage' width="2493" height="1292" src="/prizes/system76_keyboard.jpg" alt="System76 Launch Heavy Keyboard"></Image>
+            <p className='prizeCaption'>System76 Launch Heavy Keyboard</p>
+          </div>
         </div>
 
         <div className='track'>
@@ -27,6 +33,12 @@ export default function Tracks() {
             The beauty of systems is that they can do tasks for us, and that's what orchestration's
             about. So how can this beauty be furthered?
           </p>
+
+          <p className='prizeHint'>Hover to reveal prize</p>
+          <div className='prizeReveal'>
+            <Image className='prizeImage' width="370" height="200" src="/prizes/framework_board.webp" alt="DeepComputing RISC-V Mainboard"></Image>
+            <p className='prizeCaption'>DeepComputing RISC-V Mainboard</p>
+          </div>
         </div>
 
         <div className='track'>
@@ -35,6 +47,12 @@ export default function Tracks() {
             It's always important to be in the know for how well systems are doing. Is there a gap? Could
             information be more concise? What's a way to make monitoring better?
           </p>
+
+          <p className='prizeHint'>Hover to reveal prize</p>
+          <div className='prizeReveal'>
+            <Image className='prizeImage' width="370" height="200" src="/prizes/trmnl.webp" alt="TRMNL"></Image>
+            <p className='prizeCaption'>TRMNL (X)</p>
+          </div>
         </div>
       </div>
 

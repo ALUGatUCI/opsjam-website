@@ -1,14 +1,12 @@
 "use server"
 
 import { NextRequest } from 'next/server'
-import supabase from '../../../services/supabase'
-import { generateRandomCode } from '../../../services/security'
+import databaseService from '../../../services/supabase'
 
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {
     return Response.json(
       { ok: false, error: 'Applications are not being accepted at this time' },
-      { status: 400 },
     )
   }
 
@@ -44,7 +42,6 @@ export async function PUT(request: NextRequest) {
   ) {
     return Response.json(
       { ok: false, error: 'Missing required fields' },
-      { status: 400 },
     )
   }
 
@@ -52,77 +49,34 @@ export async function PUT(request: NextRequest) {
   if (!dateOfBirth) {
     return Response.json(
       { ok: false, error: 'You must be 18 or over to participate' },
-      { status: 400 },
     )
   }
 
-  // Check that this email hasn't already applied.
-  const { data: existing, error: lookupError } = await supabase
-    .from('applications')
-    .select('id')
-    .eq('email', String(email))
-    .maybeSingle()
-
-  if (lookupError) {
+  try {
+    await databaseService.submitApplication({
+      fullName: String(fullName),
+      email: String(email),
+      phoneNumber: String(phoneNumber),
+      dateOfBirth: String(dateOfBirth),
+      gender: gender ? String(gender) : null,
+      school: String(school),
+      levelOfStudy: levelOfStudy ? String(levelOfStudy) : null,
+      major: major ? String(major) : null,
+      graduationYear: graduationYear ? Number(graduationYear) : null,
+      country: String(country),
+      shirtSize: shirtSize ? String(shirtSize) : null,
+      dietaryRestrictions: dietaryRestrictions,
+      resume: resume,
+    })
+  } catch (error) {
     return Response.json(
-      { ok: false, error: `Lookup failed: ${lookupError.message}` },
-      { status: 500 },
-    )
-  }
-
-  if (existing) {
-    return Response.json(
-      { ok: false, error: 'An application with this email already exists.' },
-      { status: 409 },
-    )
-  }
-
-  // 1. Upload the resume to the (private) `resumes` bucket.
-  // Use only a UUID + safe extension — raw filenames can contain spaces,
-  // parentheses, or non-ASCII chars that Supabase rejects as an invalid key.
-  const ext = resume.name.split('.').pop()?.toLowerCase() ?? 'pdf'
-  const resumePath = `${crypto.randomUUID()}.${ext}`
-  const { error: uploadError } = await supabase.storage
-    .from('resumes')
-    .upload(resumePath, resume, { contentType: resume.type })
-
-  if (uploadError) {
-    console.error('Resume upload failed:', uploadError)
-    return Response.json(
-      { ok: false, error: `Resume upload failed: ${uploadError.message}` },
-      { status: 500 },
-    )
-  }
-
-  // 2. Insert the application row, storing only the path to the resume.
-  const { error: insertError } = await supabase.from('applications').insert({
-    full_name: String(fullName),
-    email: String(email),
-    phone_number: String(phoneNumber),
-    over_18: dateOfBirth ? dateOfBirth : null,
-    gender: gender ? String(gender) : null,
-    school: String(school),
-    level_of_study: levelOfStudy ? String(levelOfStudy) : null,
-    major: major ? String(major) : null,
-    graduation_year: graduationYear ? Number(graduationYear) : null,
-    country: String(country),
-    shirt_size: shirtSize ? String(shirtSize) : null,
-    dietary_restrictions: dietaryRestrictions,
-    resume_path: resumePath,
-    confirmation_code: generateRandomCode()
-  })
-
-  if (insertError) {
-    // Don't leave an orphaned file if the row failed to save.
-    await supabase.storage.from('resumes').remove([resumePath])
-    return Response.json(
-      { ok: false, error: `Failed to save application: ${insertError.message}` },
-      { status: 500 },
+      { ok: false, error: String(error) },
+      { status: 500 }
     )
   }
 
   return Response.json(
     { ok: true, message: 'Application submitted' },
-    { status: 201 },
+    { status: 201 }
   )
 }
