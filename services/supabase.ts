@@ -14,6 +14,7 @@ type ApplicationSubmission = {
   shirtSize: string | null
   dietaryRestrictions: string[]
   resume: File
+  confirmationCode: string | null
 }
 
 class DatabaseService {
@@ -100,7 +101,7 @@ class DatabaseService {
     }
   }
 
-  public async submitApplication(application: ApplicationSubmission, randomCode: string): Promise<void> {
+  public async submitApplication(application: ApplicationSubmission): Promise<void> {
     // Reject a second application from the same email.
     const { data: existing, error: lookupError } = await this.supabase
       .from('applications')
@@ -143,7 +144,7 @@ class DatabaseService {
       shirt_size: application.shirtSize,
       dietary_restrictions: application.dietaryRestrictions,
       resume_path: resumePath,
-      confirmation_code: randomCode,
+      confirmation_code: application.confirmationCode,
     })
 
     if (insertError) {

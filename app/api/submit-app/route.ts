@@ -1,7 +1,9 @@
 "use server"
 
 import { NextRequest } from 'next/server'
-import databaseService from '../../../services/supabase'
+import databaseService from '@/services/supabase'
+import emailService from '@/services/email'
+import { generateRandomCode } from '@/services/security'
 
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {
@@ -30,6 +32,9 @@ export async function PUT(request: NextRequest) {
 
   // The resume comes through as a File (or null if none was attached).
   const resume = form.get('resume')
+
+  // Generate the confirmation confirmationCode
+  const confirmationCode = generateRandomCode()
 
   // Re-validate on the server — the client's `required` is bypassable.
   if (
@@ -67,7 +72,9 @@ export async function PUT(request: NextRequest) {
       shirtSize: shirtSize ? String(shirtSize) : null,
       dietaryRestrictions: dietaryRestrictions,
       resume: resume,
+      confirmationCode: confirmationCode
     })
+    emailService.sendApplicationConfirmation(String(email), confirmationCode)
   } catch (error) {
     return Response.json(
       { ok: false, error: String(error) },
