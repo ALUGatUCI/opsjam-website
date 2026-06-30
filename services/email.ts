@@ -31,6 +31,20 @@ class EmailService {
       text: `Thanks for joining the OpsJam mailing list, ${recipient}.`,
     })
   }
+
+  public async sendApplicationConfirmation(recipient: string, confirmationCode: string) {
+    const html = await render(
+      createElement(ApplicationConfirmation, { email: recipient, confirmationCode: confirmationCode })
+    )
+
+    await this.transporter.sendMail({
+      from: "hack@alugatuci.org",
+      to: recipient,
+      subject: "OpsJam Application Confirmation",
+      html,
+      text: `Confirm your OpsJam application.`,
+    })
+  }
 }
 
 const emailService = new EmailService()

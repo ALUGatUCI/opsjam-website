@@ -12,8 +12,8 @@ import type { ReactNode } from 'react'
 
 type Props = {
   children: ReactNode
-  email: string
-  unsubscribeKey: string
+  email: string | null
+  unsubscribeKey: string | null
 }
 
 // Shared base layout for every email: a centered, fixed-width card on the
@@ -41,16 +41,17 @@ export default function EmailLayout({
         <Container style={container}>
           <Section>{children}</Section>
         </Container>
-
-        <Container style={footer}>
-          <Text style={footerText}>
-            If you would like to unsubscribe from the mailing list,{' '}
-            <Link href={`https://alugatuci.org/unsubscribe?email=${email}&unsubscribe_key=${unsubscribeKey}`} style={footerLink}>
-              click here
-            </Link>
-            .
-          </Text>
-        </Container>
+        {unsubscribeKey &&
+          <Container style={footer}>
+            <Text style={footerText}>
+              If you would like to unsubscribe from the mailing list,{' '}
+              <Link href={`https://hack.alugatuci.org/unsubscribe?email=${email}&unsubscribe_key=${unsubscribeKey}`} style={footerLink}>
+                click here
+              </Link>
+              .
+            </Text>
+          </Container>
+        }
       </Body>
     </Html>
   )
