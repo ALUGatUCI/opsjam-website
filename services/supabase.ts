@@ -1,7 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-import { generateRandomCode } from './security'
-
 type ApplicationSubmission = {
   fullName: string
   email: string
@@ -16,6 +14,7 @@ type ApplicationSubmission = {
   shirtSize: string | null
   dietaryRestrictions: string[]
   resume: File
+  confirmationCode: string | null
 }
 
 class DatabaseService {
@@ -57,7 +56,7 @@ class DatabaseService {
     }
   }
 
-  public async joinMailingList(email: string): Promise<void> {
+  public async joinMailingList(email: string, randomCode: string): Promise<void> {
     const { data, error } = await this.supabase
       .from('mailing')
       .select('email')
@@ -70,7 +69,7 @@ class DatabaseService {
 
     const { error: subscribeError } = await this.supabase
       .from('mailing')
-      .insert({ email: email, unsubscribe_key: generateRandomCode() })
+      .insert({ email: email, unsubscribe_key: randomCode })
 
     if (subscribeError) {
       throw new Error("There was a problem subscribing the email to the mailing list")
@@ -102,7 +101,7 @@ class DatabaseService {
     }
   }
 
-  public async submitApplication(application: ApplicationSubmission): Promise<void> {
+  public async submitApplication(application: ApplicationSubmission): Promise<number> {
     // Reject a second application from the same email.
     const { data: existing, error: lookupError } = await this.supabase
       .from('applications')
@@ -131,28 +130,35 @@ class DatabaseService {
     }
 
     // Insert the application row, storing only the path to the resume.
-    const { error: insertError } = await this.supabase.from('applications').insert({
-      full_name: application.fullName,
-      email: application.email,
-      phone_number: application.phoneNumber,
-      over_18: application.dateOfBirth,
-      gender: application.gender,
-      school: application.school,
-      level_of_study: application.levelOfStudy,
-      major: application.major,
-      graduation_year: application.graduationYear,
-      country: application.country,
-      shirt_size: application.shirtSize,
-      dietary_restrictions: application.dietaryRestrictions,
-      resume_path: resumePath,
-      confirmation_code: generateRandomCode(),
-    })
+    // Return the new row's id so the caller can build the confirmation link.
+    const { data: inserted, error: insertError } = await this.supabase
+      .from('applications')
+      .insert({
+        full_name: application.fullName,
+        email: application.email,
+        phone_number: application.phoneNumber,
+        over_18: application.dateOfBirth,
+        gender: application.gender,
+        school: application.school,
+        level_of_study: application.levelOfStudy,
+        major: application.major,
+        graduation_year: application.graduationYear,
+        country: application.country,
+        shirt_size: application.shirtSize,
+        dietary_restrictions: application.dietaryRestrictions,
+        resume_path: resumePath,
+        confirmation_code: application.confirmationCode,
+      })
+      .select('id')
+      .single()
 
-    if (insertError) {
+    if (insertError || !inserted) {
       // Don't leave an orphaned file if the row failed to save.
       await this.supabase.storage.from('resumes').remove([resumePath])
       throw new Error("There was a problem saving the application")
     }
+
+    return inserted.id as number
   }
 }
 

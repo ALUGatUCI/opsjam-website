@@ -8,9 +8,9 @@ export default function Home() {
   return (
     <>
       <Image width="400" height="250" alt="InfraJam Horizontal Logo" src="/infrajam-logo-horizontal.svg"></Image>
+      <h2>January 16-17, 2027</h2>
       <p>
-        An in-development <em style={{ color: '#6366f1' }}>infrastructure-focused hackathon</em> that
-        is planned to be hosted at UC Irvine.
+        An in-development <em style={{ color: '#6366f1' }}>infrastructure-focused hackathon</em> hosted at UC Irvine.
       </p>
 
 

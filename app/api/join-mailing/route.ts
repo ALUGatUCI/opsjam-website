@@ -2,6 +2,8 @@
 
 import { NextRequest } from 'next/server'
 import databaseService from '../../../services/supabase'
+import emailService from '../../../services/email'
+import { generateRandomCode } from '../../../services/security'
 
 export async function POST(request: NextRequest) {
   const form = await request.formData();
@@ -13,9 +15,11 @@ export async function POST(request: NextRequest) {
   }
 
   const trimmedEmail = String(email).trim()
+  const randomCode = generateRandomCode()
 
   try {
-    await databaseService.joinMailingList(trimmedEmail)
+    await databaseService.joinMailingList(trimmedEmail, randomCode)
+    await emailService.sendMailingListEmail(trimmedEmail, randomCode)
   } catch (error) {
     return Response.json(
       { ok: false, message: String(error) },
