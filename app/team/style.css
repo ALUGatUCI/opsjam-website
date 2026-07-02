@@ -1,4 +1,4 @@
-/* Team members — roughly five per row, wrapping responsively. Flexbox (not
+/* Team members — at most four per row, wrapping responsively. Flexbox (not
    grid) so an incomplete last row centers instead of clinging to the left. */
 .teamGrid {
     display: flex;
@@ -10,7 +10,11 @@
 }
 
 .teamMember {
-    flex: 0 0 140px;         /* fixed tile width so rows pack ~5 across */
+    /* A quarter of the row minus its share of the 18px column gaps (3 gaps for
+       4 tiles) → exactly four per row. min-width keeps tiles readable and lets
+       them wrap to fewer on narrow screens instead of shrinking. */
+    flex: 0 0 calc(25% - 13.5px);
+    min-width: 140px;
     display: flex;
     flex-direction: column;
     text-align: left;        /* name/role sit left-aligned under the photo */
