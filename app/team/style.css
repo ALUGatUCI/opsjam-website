@@ -1,0 +1,53 @@
+/* Team members — roughly five per row, wrapping responsively. Flexbox (not
+   grid) so an incomplete last row centers instead of clinging to the left. */
+.teamGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px 18px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.teamMember {
+    flex: 0 0 140px;         /* fixed tile width so rows pack ~5 across */
+    display: flex;
+    flex-direction: column;
+    text-align: left;        /* name/role sit left-aligned under the photo */
+}
+
+/* Uniform landscape tiles, cropped to fill regardless of source aspect ratio. */
+.teamPhoto {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center; /* crop toward the center of each photo */
+    border-radius: 4px;
+}
+
+.teamMember h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 10px 0 2px;
+    text-align: left;
+}
+
+.teamMember h3 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #a5a6f6;          /* muted indigo accent, like the reference's blue role */
+    margin: 0;
+    text-align: left;
+}
+
+.teamLinkedin {
+    margin-top: 6px;
+    line-height: 0;          /* trim the inline-image gap */
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.teamLinkedin:hover {
+    opacity: 1;
+}
