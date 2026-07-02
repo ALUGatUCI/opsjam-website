@@ -12,7 +12,7 @@ const redHatDisplay = Red_Hat_Display({
 
 export const metadata: Metadata = {
   title: "OpsJam @ UCI",
-  description: "UCI Irvine's infrastructure-focused hackathon",
+  description: "UC Irvine's infrastructure-focused hackathon",
 };
 
 export default function RootLayout({

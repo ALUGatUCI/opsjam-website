@@ -44,9 +44,11 @@ export function NavBar() {
     <>
       <div className='navBar'>
         <NavButton text='Home' link='/' imageSrc='/infrajam-logo.svg'></NavButton>
-        <NavButton text='Apply' link='/apply'></NavButton>
-        <NavButton text='Tracks' link='/tracks'></NavButton>
-        <NavButton text='Team' link='/team'></NavButton>
+        <div className='navBarScroll'>
+          <NavButton text='Apply' link='/apply'></NavButton>
+          <NavButton text='Tracks' link='/tracks'></NavButton>
+          <NavButton text='Team' link='/team'></NavButton>
+        </div>
       </div>
       <br/>
     </>
