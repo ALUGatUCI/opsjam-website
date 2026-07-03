@@ -4,13 +4,9 @@ import { NextRequest } from 'next/server'
 import databaseService from '@/services/supabase'
 import emailService from '@/services/email'
 import { generateRandomCode } from '@/services/security'
-import { createLogger, maskEmail, serializeError } from '@/services/logger'
-
-const logger = createLogger('api/submit-app')
 
 export async function PUT(request: NextRequest) {
   if (process.env.ACCEPTING_APPS == '0') {
-    logger.warn('Application submission rejected: applications are closed')
     return Response.json(
       { ok: false, error: 'Applications are not being accepted at this time' },
     )
@@ -49,17 +45,6 @@ export async function PUT(request: NextRequest) {
     !country ||
     !(resume instanceof File)
   ) {
-    logger.warn('Application submission rejected: missing required fields', {
-      email: email ? maskEmail(String(email)) : null,
-      missingFields: [
-        !fullName && 'fullName',
-        !email && 'email',
-        !phoneNumber && 'phoneNumber',
-        !school && 'school',
-        !country && 'country',
-        !(resume instanceof File) && 'resume',
-      ].filter(Boolean),
-    })
     return Response.json(
       { ok: false, error: 'Missing required fields' },
     )
@@ -67,13 +52,10 @@ export async function PUT(request: NextRequest) {
 
   // Check the date of birth is 18 or over
   if (!dateOfBirth) {
-    logger.warn('Application submission rejected: missing date of birth', { email: maskEmail(String(email)) })
     return Response.json(
       { ok: false, error: 'You must be 18 or over to participate' },
     )
   }
-
-  logger.info('Application submission received', { email: maskEmail(String(email)) })
 
   try {
     const appId = await databaseService.submitApplication({
@@ -97,9 +79,8 @@ export async function PUT(request: NextRequest) {
     // surfaces as an unhandledRejection and crashes the process.
     emailService
       .sendApplicationConfirmation(String(email), appId, confirmationCode)
-      .catch((err) => logger.error('Failed to send application confirmation email', { appId, error: serializeError(err) }))
+      .catch((err) => console.error('Failed to send application confirmation email:', err))
   } catch (error) {
-    logger.error('Application submission failed', { email: maskEmail(String(email)), error: serializeError(error) })
     return Response.json(
       { ok: false, error: String(error) },
       { status: 500 }
