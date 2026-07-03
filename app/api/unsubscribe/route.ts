@@ -30,7 +30,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     logger.error('Unsubscribe request failed', { email: maskEmail(trimmedEmail), error: serializeError(error) })
     return Response.json(
-      { ok: false, error: String(error) },
+      { ok: false, error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }

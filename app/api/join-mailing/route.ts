@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       error: serializeError(error),
     });
     return Response.json(
-      { ok: false, message: String(error) },
+      { ok: false, message: error instanceof Error ? error.message : String(error) },
       { status: 500 },
     );
   }
