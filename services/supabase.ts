@@ -1,4 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createLogger, maskEmail } from './logger'
+
+const logger = createLogger('services/supabase')
 
 type ApplicationSubmission = {
   fullName: string
@@ -34,11 +37,17 @@ class DatabaseService {
       .eq('id', appId)
       .maybeSingle()
 
+    if (error) {
+      logger.error('Failed to look up application for confirmation', { appId, supabaseError: error })
+    }
+
     if (!data) {
+      logger.warn('Confirmation attempted for unknown application', { appId })
       throw new Error("Application was not found")
     }
 
     if (data?.confirmed) {
+      logger.warn('Confirmation attempted for already-confirmed application', { appId })
       throw new Error("Application has already been confirmed")
     }
 
@@ -49,9 +58,13 @@ class DatabaseService {
         .eq('id', appId)
 
       if (updateError) {
+        logger.error('Failed to mark application as confirmed', { appId, supabaseError: updateError })
         throw new Error("An error occurred confirming your application")
       }
+
+      logger.info('Application confirmed', { appId })
     } else {
+      logger.warn('Confirmation code mismatch', { appId })
       throw new Error("The confirmation code does not match")
     }
   }
@@ -63,7 +76,12 @@ class DatabaseService {
       .eq('email', email)
       .maybeSingle()
 
+    if (error) {
+      logger.error('Failed to check mailing list for existing email', { email: maskEmail(email), supabaseError: error })
+    }
+
     if (data) {
+      logger.warn('Mailing list signup attempted for already-subscribed email', { email: maskEmail(email) })
       throw new Error("The email is already subscribed")
     }
 
@@ -72,8 +90,11 @@ class DatabaseService {
       .insert({ email: email, unsubscribe_key: randomCode })
 
     if (subscribeError) {
+      logger.error('Failed to insert email into mailing list', { email: maskEmail(email), supabaseError: subscribeError })
       throw new Error("There was a problem subscribing the email to the mailing list")
     }
+
+    logger.info('Email subscribed to mailing list', { email: maskEmail(email) })
   }
 
   public async unsubscribeFromMailingList(email: string, unsubscribeKey: string): Promise<void> {
@@ -83,7 +104,12 @@ class DatabaseService {
       .eq('email', email)
       .maybeSingle()
 
+    if (error) {
+      logger.error('Failed to look up email for unsubscribe', { email: maskEmail(email), supabaseError: error })
+    }
+
     if (!data) {
+      logger.warn('Unsubscribe attempted for unknown email', { email: maskEmail(email) })
       throw new Error("The email was not found")
     }
 
@@ -94,9 +120,13 @@ class DatabaseService {
         .eq('email', email)
 
       if (deleteError) {
+        logger.error('Failed to delete email from mailing list', { email: maskEmail(email), supabaseError: deleteError })
         throw new Error("Something went wrong unsubscribing you")
       }
+
+      logger.info('Email unsubscribed from mailing list', { email: maskEmail(email) })
     } else {
+      logger.warn('Unsubscribe key mismatch', { email: maskEmail(email) })
       throw new Error("The unsubscribe token does not match")
     }
   }
@@ -110,10 +140,12 @@ class DatabaseService {
       .maybeSingle()
 
     if (lookupError) {
+      logger.error('Failed to check for existing application', { email: maskEmail(application.email), supabaseError: lookupError })
       throw new Error("There was a problem checking for an existing application")
     }
 
     if (existing) {
+      logger.warn('Duplicate application attempted', { email: maskEmail(application.email), existingAppId: existing.id })
       throw new Error("An application with this email already exists")
     }
 
@@ -126,6 +158,7 @@ class DatabaseService {
       .upload(resumePath, application.resume, { contentType: application.resume.type })
 
     if (uploadError) {
+      logger.error('Failed to upload resume to storage', { email: maskEmail(application.email), resumePath, supabaseError: uploadError })
       throw new Error("There was a problem uploading the resume")
     }
 
@@ -153,10 +186,13 @@ class DatabaseService {
       .single()
 
     if (insertError || !inserted) {
+      logger.error('Failed to insert application row, removing uploaded resume', { email: maskEmail(application.email), resumePath, supabaseError: insertError })
       // Don't leave an orphaned file if the row failed to save.
       await this.supabase.storage.from('resumes').remove([resumePath])
       throw new Error("There was a problem saving the application")
     }
+
+    logger.info('Application submitted', { appId: inserted.id, email: maskEmail(application.email) })
 
     return inserted.id as number
   }
