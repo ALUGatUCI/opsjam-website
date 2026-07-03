@@ -1,7 +1,5 @@
 .navBar {
     display: flex;
-    flex-wrap: wrap;          /* buttons drop to a new line instead of overflowing */
-    justify-content: left;
     align-items: center;
     gap: 8px;
     width: 100%;              /* span the page so the logo can sit at the left */
@@ -11,6 +9,42 @@
     background-color: #312e81;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+/* The link row (logo stays pinned outside this). Kept on a single line and
+   scrolled horizontally when it can't fit — small screens / future links. */
+.navBarScroll {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    flex: 1;                  /* take the width left after the logo */
+    min-width: 0;             /* allow shrinking below content width so it scrolls */
+    overflow-x: auto;
+    /* Thin scrollbar (Firefox) — appears only when there's overflow to scroll. */
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 transparent;   /* indigo thumb, invisible track */
+    /* Fade the links into the bar at both ends to hint there's more to scroll. */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+}
+
+/* Thin scrollbar (WebKit) — appears only when there's overflow to scroll. */
+.navBarScroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.navBarScroll::-webkit-scrollbar-thumb {
+    background-color: #6366f1;
+    border-radius: 3px;
+}
+
+.navBarScroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.navBarScroll::-webkit-scrollbar {
+    display: none;            /* hide the scrollbar (WebKit) — still scrollable */
 }
 
 /* Extend the navbar background upward so over-scrolling past the top of the
@@ -31,7 +65,7 @@
 
 /* The logo button: pinned to the left, no underline. */
 .logoButton {
-    margin-right: auto;       /* push the remaining buttons to the right */
+    flex-shrink: 0;           /* stays put while the link row scrolls */
     padding-left: 0;
 }
 
@@ -39,6 +73,8 @@
 .currentNavButton {
     background-color: transparent;
     color: white;
+    flex-shrink: 0;          /* keep full size and overflow (scroll) instead of squishing */
+    white-space: nowrap;     /* never break a label across lines */
     /* Scale with the viewport: small on phones, capped on desktop. */
     padding: clamp(6px, 2vw, 10px) clamp(12px, 4vw, 18px);
     border: none;
