@@ -3,6 +3,9 @@ import { render } from '@react-email/render'
 import { createElement } from 'react'
 import MailingListConfirmation from './emails/MailingListConfirmation'
 import ApplicationConfirmation from './emails/ApplicationConfirmation'
+import { createLogger, maskEmail, serializeError } from './logger'
+
+const logger = createLogger('services/email')
 
 class EmailService {
   private transporter: nodemailer.Transporter
@@ -24,13 +27,20 @@ class EmailService {
       createElement(MailingListConfirmation, { email: recipient, unsubscribeKey: unsubscribeKey })
     )
 
-    await this.transporter.sendMail({
-      from: "hack@alugatuci.org",
-      to: recipient,
-      subject: "OpsJam Mailing List Confirmation",
-      html,
-      text: `Thanks for joining the OpsJam mailing list, ${recipient}.`,
-    })
+    try {
+      await this.transporter.sendMail({
+        from: "hack@alugatuci.org",
+        to: recipient,
+        subject: "OpsJam Mailing List Confirmation",
+        html,
+        text: `Thanks for joining the OpsJam mailing list, ${recipient}.`,
+      })
+    } catch (error) {
+      logger.error('Failed to send mailing list confirmation email', { recipient: maskEmail(recipient), error: serializeError(error) })
+      throw error
+    }
+
+    logger.info('Mailing list confirmation email sent', { recipient: maskEmail(recipient) })
   }
 
   public async sendApplicationConfirmation(recipient: string, appId: number, confirmationCode: string) {
@@ -38,13 +48,20 @@ class EmailService {
       createElement(ApplicationConfirmation, { appId: appId, confirmationCode: confirmationCode })
     )
 
-    await this.transporter.sendMail({
-      from: "hack@alugatuci.org",
-      to: recipient,
-      subject: "OpsJam Application Confirmation",
-      html,
-      text: `Confirm your OpsJam application.`,
-    })
+    try {
+      await this.transporter.sendMail({
+        from: "hack@alugatuci.org",
+        to: recipient,
+        subject: "OpsJam Application Confirmation",
+        html,
+        text: `Confirm your OpsJam application.`,
+      })
+    } catch (error) {
+      logger.error('Failed to send application confirmation email', { recipient: maskEmail(recipient), appId, error: serializeError(error) })
+      throw error
+    }
+
+    logger.info('Application confirmation email sent', { recipient: maskEmail(recipient), appId })
   }
 }
 
