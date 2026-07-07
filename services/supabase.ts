@@ -21,13 +21,24 @@ type ApplicationSubmission = {
 }
 
 class DatabaseService {
-  private supabase: SupabaseClient
+  private _supabase: SupabaseClient | null = null
 
-  public constructor() {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    )
+  // Create the client lazily on first use rather than in the constructor, so
+  // merely importing this module (e.g. to render a page) doesn't throw when the
+  // Supabase env vars are absent. Methods that touch the DB will throw a clear
+  // error instead, which their callers already handle.
+  private get supabase(): SupabaseClient {
+    if (!this._supabase) {
+      const url = process.env.SUPABASE_URL
+      const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+      if (!url || !key) {
+        throw new Error(
+          'Supabase is not configured (set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY)',
+        )
+      }
+      this._supabase = createClient(url, key)
+    }
+    return this._supabase
   }
 
   public async confirmApplication(appId: string, confirmationCode: string): Promise<void> {
@@ -129,6 +140,22 @@ class DatabaseService {
       logger.warn('Unsubscribe key mismatch', { email: maskEmail(email) })
       throw new Error("The unsubscribe token does not match")
     }
+  }
+
+  // Read-only: return every subscribed email. Used by the admin dashboard to
+  // display the list. Intentionally offers no mutation of the mailing table.
+  public async getMailingList(): Promise<string[]> {
+    const { data, error } = await this.supabase
+      .from('mailing')
+      .select('email')
+      .order('email', { ascending: true })
+
+    if (error) {
+      logger.error('Failed to fetch mailing list', { supabaseError: error })
+      throw new Error("There was a problem fetching the mailing list")
+    }
+
+    return (data ?? []).map((row) => String(row.email))
   }
 
   public async submitApplication(application: ApplicationSubmission): Promise<number> {

@@ -43,6 +43,35 @@ class EmailService {
     logger.info('Mailing list confirmation email sent', { recipient: maskEmail(recipient) })
   }
 
+  // Send a plain admin-authored message to a single recipient. The caller
+  // (the broadcast route) fans this out across the whole mailing list, using
+  // BCC-style individual sends so recipients don't see each other's addresses.
+  public async sendBroadcast(recipient: string, subject: string, message: string): Promise<void> {
+    // Render the plain-text message as simple HTML paragraphs. Escape first so
+    // any angle brackets in the message can't inject markup, then add <br/>.
+    const escape = (s: string) =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const html = message
+      .split(/\n{2,}/)
+      .map((para) => `<p>${escape(para).replace(/\n/g, '<br/>')}</p>`)
+      .join('')
+
+    try {
+      await this.transporter.sendMail({
+        from: "hack@alugatuci.org",
+        to: recipient,
+        subject,
+        html,
+        text: message,
+      })
+    } catch (error) {
+      logger.error('Failed to send broadcast email', { recipient: maskEmail(recipient), error: serializeError(error) })
+      throw error
+    }
+
+    logger.info('Broadcast email sent', { recipient: maskEmail(recipient) })
+  }
+
   public async sendApplicationConfirmation(recipient: string, appId: number, confirmationCode: string) {
     const html = await render(
       createElement(ApplicationConfirmation, { appId: appId, confirmationCode: confirmationCode })

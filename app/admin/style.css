@@ -1,0 +1,148 @@
+/* Centered card for the admin gate + dashboard, using the site's surface
+   colors (same palette as the form inputs and navbar accents). */
+.adminCard {
+    width: 100%;
+    max-width: 440px;
+    margin: 4rem auto;
+    padding: 2rem 1.75rem;
+    background-color: #25254a;
+    border: 1px solid #3a3a5c;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.adminCard.dashboard {
+    max-width: 720px;
+    text-align: left;
+}
+
+/* Small indigo pill above the heading, echoing the navbar accent. */
+.adminBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background-color: #312e81;
+    color: #c7c9ff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.adminCard h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.adminCard p {
+    margin: 0 0 20px;
+}
+
+/* Dashboard header: title on the left, log-out on the right. */
+.adminHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.adminHeader h1 {
+    margin: 0;
+}
+
+/* Each dashboard block, divided by a hairline. */
+.adminSection {
+    padding-top: 24px;
+    margin-top: 24px;
+    border-top: 1px solid #3a3a5c;
+}
+
+.adminSection h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Count pill next to the "Mailing list" heading. */
+.adminCount {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background-color: #312e81;
+    color: #c7c9ff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Scrollable list of subscriber emails. */
+.emailList {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #3a3a5c;
+    border-radius: 8px;
+    background-color: #1f1f3d;
+}
+
+.emailList li {
+    padding: 8px 14px;
+    font-size: 15px;
+    color: #d8d8ea;
+    border-bottom: 1px solid #2c2c50;
+    word-break: break-all;
+}
+
+.emailList li:last-child {
+    border-bottom: none;
+}
+
+/* Broadcast composer. */
+.broadcastForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.broadcastForm input,
+.broadcastForm textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #3a3a5c;
+    border-radius: 6px;
+    background-color: #1f1f3d;
+    color: white;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.broadcastForm textarea {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.broadcastForm input:focus,
+.broadcastForm textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+}
+
+.broadcastForm input::placeholder,
+.broadcastForm textarea::placeholder {
+    color: #8a8aa6;
+}
+
+.broadcastForm .applyButton {
+    align-self: flex-start;
+}
+
+.broadcastForm .applyButton:disabled {
+    opacity: 0.6;
+    cursor: default;
+}

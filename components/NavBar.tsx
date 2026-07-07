@@ -48,6 +48,7 @@ export function NavBar() {
           <NavButton text='Apply' link='/apply'></NavButton>
           <NavButton text='Tracks' link='/tracks'></NavButton>
           <NavButton text='Team' link='/team'></NavButton>
+          <NavButton text='Admin' link='/admin'></NavButton>
         </div>
       </div>
       <br/>
