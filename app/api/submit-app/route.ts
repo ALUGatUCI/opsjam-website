@@ -101,7 +101,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     logger.error('Application submission failed', { email: maskEmail(String(email)), error: serializeError(error) })
     return Response.json(
-      { ok: false, error: String(error) },
+      { ok: false, error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }

@@ -33,11 +33,13 @@ export default function Home() {
       </p>
       <MailingList />
 
-      <h2>Thanks To Our Sponsors</h2>
+      <h2>Thanks To Our Partners</h2>
       {/* This is for when we have actual sponsors to showcase */}
       <div className='horizontal sponsors'>
-        <a target='_blank' href='https://suse.com'><Image className='sponsors' alt="SUSE" width="300" height="300" src="/sponsors/suse-logo.svg"/></a>
+        <a target='_blank' href='https://suse.com'><Image className='sponsors' alt="SUSE" width="300" height="300" src="/sponsors/suse-logo.svg" /></a>
+        <a target='_blank' href='https://www.linuxfoundation.org/'><Image className='sponsors' alt="The Linux Foundation" width="500" height="300" src="/sponsors/lf-logo.svg"/></a>
       </div>
+      <br></br>
       <SiteButton text='Interested in Sponsoring?' link='mailto:contact@alugatuci.org'></SiteButton>
 
       <h2>Brought To You By</h2>
