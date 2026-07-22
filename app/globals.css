@@ -64,6 +64,10 @@ img {
     width: 200px;
     height: 120px;
     object-fit: contain;
+    box-sizing: border-box;      /* padding stays inside the fixed box so all logos match */
+    padding: 20px 26px;          /* breathing room so logos don't touch the box edges */
+    background-color: black;
+    border-radius: 15px;
 }
 
 /* Primary action button (bright indigo). */
